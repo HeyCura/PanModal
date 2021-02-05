@@ -834,14 +834,14 @@ extension PanModalPresentationController: UIGestureRecognizerDelegate {
 
 // MARK: - UIBezierPath
 
-private extension PanModalPresentationController {
+public extension PanModalPresentationController {
 
     /**
      Draws top rounded corners on a given view
      We have to set a custom path for corner rounding
      because we render the dragIndicator outside of view bounds
      */
-    func addRoundedCorners(to view: UIView) {
+    public func addRoundedCorners(to view: UIView) {
         let radius = presentable?.cornerRadius ?? 0
         let path = UIBezierPath(roundedRect: view.bounds,
                                 byRoundingCorners: [.topLeft, .topRight],
