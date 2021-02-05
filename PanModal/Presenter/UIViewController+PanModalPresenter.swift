@@ -61,6 +61,29 @@ extension UIViewController: PanModalPresenter {
 
         present(viewControllerToPresent, animated: true, completion: completion)
     }
+    
+    public func presentPanModal(_ viewControllerToPresent: PanModalPresentable.LayoutType,
+                                customPresentationController: @escaping GetCustomPresentationController,
+                                sourceView: UIView? = nil,
+                                sourceRect: CGRect = .zero,
+                                completion: (() -> Void)? = nil) {
+        
+        let delegate = PanModalPresentationDelegate()
+        delegate.getCustomPresentationController = customPresentationController
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            viewControllerToPresent.modalPresentationStyle = .popover
+            viewControllerToPresent.popoverPresentationController?.sourceRect = sourceRect
+            viewControllerToPresent.popoverPresentationController?.sourceView = sourceView ?? view
+            viewControllerToPresent.popoverPresentationController?.delegate = delegate
+        } else {
+            viewControllerToPresent.modalPresentationStyle = .custom
+            viewControllerToPresent.modalPresentationCapturesStatusBarAppearance = true
+            viewControllerToPresent.transitioningDelegate = delegate
+        }
+
+        present(viewControllerToPresent, animated: true, completion: completion)
+    }
 
 }
 #endif

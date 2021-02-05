@@ -172,7 +172,7 @@ open class PanModalPresentationController: UIPresentationController {
         configureViewLayout()
     }
 
-    override public func presentationTransitionWillBegin() {
+    override open func presentationTransitionWillBegin() {
 
         guard let containerView = containerView
             else { return }
@@ -192,13 +192,13 @@ open class PanModalPresentationController: UIPresentationController {
         })
     }
 
-    override public func presentationTransitionDidEnd(_ completed: Bool) {
+    override open func presentationTransitionDidEnd(_ completed: Bool) {
         if completed { return }
 
         backgroundView.removeFromSuperview()
     }
 
-    override public func dismissalTransitionWillBegin() {
+    override open func dismissalTransitionWillBegin() {
         presentable?.panModalWillDismiss()
 
         guard let coordinator = presentedViewController.transitionCoordinator else {
@@ -217,7 +217,7 @@ open class PanModalPresentationController: UIPresentationController {
         })
     }
 
-    override public func dismissalTransitionDidEnd(_ completed: Bool) {
+    override open func dismissalTransitionDidEnd(_ completed: Bool) {
         if !completed { return }
         
         presentable?.panModalDidDismiss()

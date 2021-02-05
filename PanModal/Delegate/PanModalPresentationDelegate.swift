@@ -8,6 +8,8 @@
 #if os(iOS)
 import UIKit
 
+public typealias GetCustomPresentationController = (_ presentedViewController: UIViewController, _ presentingViewController: UIViewController?) -> PanModalPresentationController
+
 /**
  The PanModalPresentationDelegate conforms to the various transition delegates
  and vends the appropriate object for each transition controller requested.
@@ -20,6 +22,8 @@ import UIKit
  */
 public class PanModalPresentationDelegate: NSObject {
 
+    var getCustomPresentationController: GetCustomPresentationController?
+    
     /**
      Returns an instance of the delegate, retained for the duration of presentation
      */
@@ -52,7 +56,13 @@ extension PanModalPresentationDelegate: UIViewControllerTransitioningDelegate {
      Changes in size class during presentation are handled via the adaptive presentation delegate
      */
     public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        let controller = PanModalPresentationController(presentedViewController: presented, presenting: presenting)
+        var controller: PanModalPresentationController
+        if let getCustomPresentationController = getCustomPresentationController {
+            controller = getCustomPresentationController(presented, presenting)
+        }
+        else {
+            controller = PanModalPresentationController(presentedViewController: presented, presenting: presenting)
+        }
         controller.delegate = self
         return controller
     }
